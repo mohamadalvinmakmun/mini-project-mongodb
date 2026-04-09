@@ -27,6 +27,8 @@ public class MahasiswaService {
     private final String ALL_KEY = "mahasiswa::all";
 
     public Mahasiswa create(Mahasiswa mhs) {
+        validateGender(mhs.getGender());
+
         mhs.setId(counterService.getNextSequence("mahasiswa_seq"));
         Mahasiswa saved = repo.save(mhs);
 
@@ -75,6 +77,7 @@ public class MahasiswaService {
     }
 
     public Mahasiswa update(Long id, Mahasiswa mhs) {
+        validateGender(mhs.getGender());
 
         Mahasiswa existing = repo.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(
@@ -106,5 +109,15 @@ public class MahasiswaService {
         redisTemplate.delete("mahasiswa::" + id);
 
         return "Deleted";
+    }
+
+    // Method validasi gender
+    private void validateGender(Integer gender) {
+        if (gender == null || (gender != 1 && gender != 2)) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Gender harus 1 (Laki-laki) atau 2 (Perempuan)"
+            );
+        }
     }
 }

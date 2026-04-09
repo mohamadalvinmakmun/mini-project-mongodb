@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import com.example.mahasiswa.model.Mahasiswa;
 import com.example.mahasiswa.service.MahasiswaService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/mahasiswa")
 public class MahasiswaController {
@@ -16,7 +18,7 @@ public class MahasiswaController {
     private MahasiswaService service;
 
     @PostMapping
-    public Mahasiswa create(@RequestBody Mahasiswa mhs) {
+    public Mahasiswa create(@Valid @RequestBody Mahasiswa mhs) {
         return service.create(mhs);
     }
 
@@ -31,7 +33,7 @@ public class MahasiswaController {
     }
 
     @PutMapping("/{id}")
-    public Mahasiswa update(@PathVariable Long id, @RequestBody Mahasiswa mhs) {
+    public Mahasiswa update(@PathVariable Long id, @Valid @RequestBody Mahasiswa mhs) {
         return service.update(id, mhs);
     }
 
